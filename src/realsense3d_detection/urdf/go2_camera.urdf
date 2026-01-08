@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="go2_description">
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0.021112 0 -0.005366" rpy="0 0 0" />
+      <mass value="6.921" />
+      <inertia
+        ixx="0.02448"
+        ixy="0.00012166"
+        ixz="0.0014849"
+        iyy="0.098077"
+        iyz="-3.12E-05"
+        izz="0.107" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://go2_description/dae/base.dae" />
+      </geometry>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <box size="0.3762 0.0935 0.114" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- 2. 你的参考基准：原有camera_link（完整保留，位姿与原URDF一致） -->
+  <link name="camera_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0" />
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+  </link>
+
+  <!-- 连接base_link和原有camera_link的固定关节（原URDF位姿不变） -->
+  <joint name="cam_joint2" type="fixed">
+    <origin xyz="0.3 0 0" rpy="0 0.04 0" /> <!-- 与原URDF一致，无需修改 -->
+    <parent link="base_link" />
+    <child link="camera_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <!-- 3. 你的核心需求：抬头15度的相机link（camera-up15-link） -->
+  <link name="camera_up15_link">
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0" />
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+    </inertial>
+  </link>
+
+  <joint name="base_to_camera_up15_joint" type="fixed">
+    <origin xyz="0.3 0 0" rpy="0 -0.2218 0" /> <!-- 0.3018=原有0.04-15度0.2618，位置与camera_link一致 -->
+    <parent link="base_link" />
+    <child link="camera_up15_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+</robot>

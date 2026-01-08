@@ -1,0 +1,31 @@
+cd ~/ssd/ks_work/Illegal_parking_detection/illegal_pack_ws && source install/setup.bash
+ros2 launch realsense3d_detection tf_tree_sim.launch.py
+
+# 终端2：专属相机启动，复制直接执行（已包含你要求的align_depth.enable:=true）
+ros2 launch realsense2_camera rs_launch.py align_depth.enable:=true
+
+cd ~/ssd/ks_work/Illegal_parking_detection/illegal_pack_ws && source install/setup.bash
+./run_detection.sh
+
+cd ~/ssd/ks_work/Illegal_parking_detection/illegal_pack_ws && source install/setup.bash
+ros2 run realsense3d_detection CoordTransformer_node
+
+
+开启地图
+ros2 launch realsense3d_detection map.launch.py
+
+
+c++ 包
+ros2 run cpp_yolo_realsense rs_yolo_node --ros-args -p engine_path:=src/cpp_yolo_realsense/weights/helmet_cpp.engine
+
+
+ros2 run cpp_yolo_realsense rs_yolo_node --ros-args -p engine_path:=src/cpp_yolo_realsense/weights/yolo11n.engine
+
+
+坐标记录流程
+1.ros2 topic echo /clicked_point
+
+2.在 RViz2 中选择工具 在 RViz2 顶部的工具栏中，找到 “Publish Point” 按钮（图标通常是一个十字准星或一个定位针），点击它。
+
+3.在地图上点击
+把鼠标移到你想要设为停车区域的 左下角，点击一下。

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>realsense3d_detection</name>
+  <version>0.0.0</version>
+  <description>RealSense 3D detection node for ROS2</description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- ✅ 核心修复：删除冲突的ament_cmake（Python包仅需ament_python，共存会编译报错） -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- launch & TF树 核心依赖 -->
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>robot_state_publisher</depend>
+
+  <!-- 原有基础依赖 -->
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>message_filters</depend>
+
+  <!-- ✅ 补充缺失依赖（你的代码必须用到，否则运行时报错） -->
+  <depend>geometry_msgs</depend>  <!-- 发布PointStamped 3D坐标必须 -->
+  <depend>tf2_ros</depend>        <!-- TF坐标变换节点必须 -->
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
