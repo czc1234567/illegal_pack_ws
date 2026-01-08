@@ -1,6 +1,6 @@
 #!/bin/bash
 # 激活conda环境（修正路径）
-source /home/agx/ssd/anaconda3/etc/profile.d/conda.sh  # 正确路径，无重复的home/czc
+source /home/agx/anaconda3/etc/profile.d/conda.sh  # 正确路径，无重复的home/czc
 conda activate yolov11
 # 设置ROS2环境（确保路径正确）
 source /opt/ros/humble/setup.bash
