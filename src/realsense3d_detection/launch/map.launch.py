@@ -9,8 +9,6 @@ def generate_launch_description():
     pkg_share = get_package_share_directory(pkg_name)
 
     # 2. 设置 RViz 配置文件路径
-    # 假设你把配置保存到了包内的 rviz 文件夹下的 default.rviz
-    # 如果该文件不存在，RViz 依然会启动，但会是默认空视图
     rviz_config_path = os.path.join(pkg_share, 'rviz', 'default.rviz')
 
     return LaunchDescription([
@@ -22,23 +20,33 @@ def generate_launch_description():
             output='screen'
         ),
 
-        # --- 节点 2: 静态坐标变换 (数据来自你的 tf2_echo) ---
-        # 对应关系: map -> camera_link
+        # --- 节点 2: 静态坐标变换 (地图 -> 机器人底盘) ---
+        # 这里的数值来自 tf2_echo map base_link 的结果
+        # 含义：定义机器人底盘(base_link) 在地图(map) 中的位置
         Node(
             package='tf2_ros',
             executable='static_transform_publisher',
-            name='static_tf_pub_map_to_camera',
+            name='static_tf_pub_map_to_base',
             arguments=[
-                '--x', '-8.667',
-                '--y', '6.105',
-                '--z', '0.000',
-                '--yaw', '2.069',    # 对应 RPY 中的第 3 个数
-                '--pitch', '0.000',  # 对应 RPY 中的第 2 个数
-                '--roll', '-1.570',  # 对应 RPY 中的第 1 个数
-                '--frame-id', 'map',
-                '--child-frame-id', 'camera_link'
+                '--x', '-8.167',     # 刚才获取的 x
+                '--y', '5.716',      # 刚才获取的 y
+                '--z', '0.000',      # 地面高度通常为 0
+                '--yaw', '2.988',    # 刚才获取的 yaw (朝向)
+                '--pitch', '0.000',  # 地面通常是平的
+                '--roll', '0.000',   # 地面通常是平的
+                '--frame-id', 'map',          # 父坐标系 (世界)
+                '--child-frame-id', 'base_link' # 子坐标系 (机器人本体)
             ],
             output='screen'
         ),
 
+
+        # --- 节点 3: RViz2 (可选，如果不需要自动启动可注释) ---
+        # Node(
+        #    package='rviz2',
+        #    executable='rviz2',
+        #    name='rviz2',
+        #    arguments=['-d', rviz_config_path],
+        #    output='screen'
+        # ),
     ])
