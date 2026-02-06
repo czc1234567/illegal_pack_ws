@@ -12,7 +12,7 @@ source install/setup.bash
 # 设置PYTHONPATH（修正conda环境的python路径）
 export PYTHONPATH="$CONDA_PREFIX/lib/python3.10/site-packages:$PYTHONPATH"
 # 运行节点
-ros2 run fishbot_navigator patrol_and_detect
+taskset -c 0-2 ros2 run fishbot_navigator patrol_and_detect
 
 
 

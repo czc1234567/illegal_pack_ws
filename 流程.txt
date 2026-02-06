@@ -29,3 +29,8 @@ ros2 run cpp_yolo_realsense rs_yolo_node --ros-args -p engine_path:=src/cpp_yolo
 
 3.在地图上点击
 把鼠标移到你想要设为停车区域的 左下角，点击一下。
+
+
+打印当前位置坐标关系
+ros2 run tf2_ros tf2_echo map base_link
+

@@ -13,6 +13,7 @@ import base64
 from collections import defaultdict
 from rclpy.qos import QoSProfile, DurabilityPolicy
 from rclpy.duration import Duration
+import subprocess
 
 # 消息类型
 from sensor_msgs.msg import Image, CameraInfo
@@ -40,17 +41,22 @@ class RealSense3DDetectionNode(Node):
         self.set_parameters([rclpy.parameter.Parameter('use_sim_time', rclpy.Parameter.Type.BOOL, False)])
 
         # 1. 区域配置
+
         self.parking_zones = [
             {'name': 'Zone_A', 'points': [(-12.785, 5.850), (-13.111, 2.153), (-2.456, 1.261), (-2.145, 4.42)]},
             {'name': 'Zone_B', 'points': [(7.534, -49.607), (13.382, -50.300), (19.548, -0.310), (13.111, 0.657)]},
             {'name': 'Zone_C', 'points': [(-45.422, -56.106), (-22.449, -57.463), (-23.201, -65.199), (-45.783, -63.022)]},
             {'name': 'Zone_D', 'points': [(-98.961, -74.009), (-92.856, -74.713), (-92.536, -67.552), (-98.224, -67.135)]},
-            {'name': 'Zone_E', 'points': [(53.289, -65.605), (77.914, -67.792), (77.471, -75.729), (52.285, -73.265)]}
+            {'name': 'Zone_E', 'points': [(53.289, -65.605), (77.914, -67.792), (77.471, -75.729), (52.285, -73.265)]},
+            {'name': 'Zone_F', 'points': [(103.042, -61.176), (105.677, -61.559), (111.644, -6.251), (108.801, -6.102)]}
         ]
 
-        self.target_classes = [0, 1, 2, 3, 5, 7] 
-        self.coco_mapping = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 5: 'bus', 7: 'truck'}
+        self.target_classes = [1, 2, 3, 5, 7] 
+        self.coco_mapping = { 1: 'bicycle', 2: 'car', 3: 'motorcycle', 5: 'bus', 7: 'truck'}
 
+        # self.target_classes = [0, 1, 2, 3, 5, 7] 
+        # self.coco_mapping = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 5: 'bus', 7: 'truck'}
+        
         # 2. TTS 与 状态记录配置
         self.tts_client = None
         self.MISSION_ID = 1 
@@ -60,7 +66,7 @@ class RealSense3DDetectionNode(Node):
         self.violation_snapshot_sent = set() 
         self.violation_tts_sent = set()      
         self.permanent_markers_sent = set()  
-        self.SNAPSHOT_DELAY = 2.0            
+        self.SNAPSHOT_DELAY = 1.5                    
         
         self.permanent_marker_array = MarkerArray()
         
@@ -244,7 +250,7 @@ class RealSense3DDetectionNode(Node):
             ]
             
             payload = {
-                'timestamp': header.stamp.sec + header.stamp.nanosec * 1e-9, 
+                'timestamp': header.stamp.sec ,
                 'frame_id': header.frame_id,
                 'image_base64': img_b64,
                 'markers': markers_data
@@ -321,7 +327,13 @@ class RealSense3DDetectionNode(Node):
 
                     # B. 语音
                     if track_id not in self.violation_tts_sent:
-                        self.send_tts_request(self.tts_alert_text)
+                        OUTPUT_FILE = "/home/agx/chao_ws/illegal_parking_detection/illegal_pack_ws/weight/test.mp3"
+
+                        ffplay_cmd = [
+                        "ffplay", "-nodisp", "-autoexit", "-loglevel", "error", OUTPUT_FILE
+                        ]
+                        play_result = subprocess.run(ffplay_cmd, capture_output=True, text=True)
+                        # self.send_tts_request(self.tts_alert_text)
                         self.violation_tts_sent.add(track_id)
                     # C. 永久标记
                     if track_id not in self.permanent_markers_sent:
@@ -386,3 +398,9 @@ def main(args=None):
     finally: node.destroy_node(); rclpy.shutdown()
 
 if __name__ == '__main__': main()
+
+
+
+
+        # self.target_classes = [0, 1, 2, 3, 5, 7] 
+        # self.coco_mapping = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 5: 'bus', 7: 'truck'}
