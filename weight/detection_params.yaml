@@ -1,0 +1,10 @@
+realsense_3d_detection_node:
+  ros__parameters:
+    # 模型路径
+    model_path: "weight/yolo11n.pt"
+    
+    # 你想要检测的类别 ID (COCO数据集标准)
+    target_classes: [0, 1, 2, 3, 5, 7]
+    
+    # 类别 ID 对应的英文名字（顺序必须和上面一一对应）
+    class_names: ["person", "bicycle", "car", "motorcycle", "bus", "truck"]

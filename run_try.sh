@@ -8,10 +8,9 @@ source /opt/ros/humble/setup.bash
 # source ~/chao_ws/robot_ws/install/setup.bash
 
 #在source当前消息所在空间
-source install/setup.bash
+source /home/agx/chao_ws/illegal_parking_detection/illegal_pack_ws/install/setup.bash
 # 设置PYTHONPATH（修正conda环境的python路径）
 export PYTHONPATH="$CONDA_PREFIX/lib/python3.10/site-packages:$PYTHONPATH"
 # 运行节点
 taskset -c 0-2 ros2 run realsense3d_detection try2_node
-
 

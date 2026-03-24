@@ -28,9 +28,9 @@ setup(
         'console_scripts': [
             'detection_node = realsense3d_detection.detection_node:main',
             # ✅ 核心修复3：删除.py后缀（ROS2入口函数不能带文件后缀，致命语法错误）
-            'CoordTransformer_node = realsense3d_detection.coordtansformer_node:main',
+            # 'CoordTransformer_node = realsense3d_detection.coordtansformer_node:main',
             'try2_node = realsense3d_detection.try2_node:main',
-            'simple_map_node = realsense3d_detection.simple_map_node:main',
+            # 'simple_map_node = realsense3d_detection.simple_map_node:main',
         ],
     },
 )

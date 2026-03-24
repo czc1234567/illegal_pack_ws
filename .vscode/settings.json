@@ -1,3 +1,6 @@
 {
-    "cmake.sourceDirectory": "/home/agx/chao_ws/illegal_parking_detection/illegal_pack_ws/src/cpp_yolo_realsense"
+    "cmake.sourceDirectory": "/home/agx/chao_ws/illegal_parking_detection/illegal_pack_ws/src/cpp_yolo_realsense",
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "python-envs.pythonProjects": []
 }
