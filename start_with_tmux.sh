@@ -45,7 +45,7 @@ tmux send-keys -t $SESSION_NAME:0.2 "echo '>>> 正在启动 RealSense 相机 (�
 # Pane 3: 静态 TF 发布 (右下)
 tmux send-keys -t $SESSION_NAME:0.3 "$SETUP_ENV" C-m
 tmux send-keys -t $SESSION_NAME:0.3 "echo '>>> 发布静态坐标变换 TF...';" C-m
-tmux send-keys -t $SESSION_NAME:0.3 "ros2 run tf2_ros static_transform_publisher --x 0.3 --y 0.0 --z 0.0 --roll -1.5708 --pitch 0.0 --yaw -1.5708 --frame-id base_link --camera_color_optical_frame" C-m
+tmux send-keys -t $SESSION_NAME:0.3 "ros2 run tf2_ros static_transform_publisher --x 0.3 --y 0.0 --z 0.0 --roll -1.5708 --pitch 0.0 --yaw -1.5708 --frame-id base_link --child-frame-id camera_color_optical_frame" C-m
 
 echo "------------------------------------------------"
 echo "✅ 全部节点已启动！"
